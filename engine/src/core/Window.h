@@ -1,35 +1,39 @@
 #pragma once
+
 #include <memory>
+#include <queue>
+#include <variant>
 
 namespace BitCrush {
+    namespace Events {
+        // C++ Magic to make it work
+        template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+        template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
-    /*
-     * Window is class which names a struct which differs in implementation depending on the system.
-     * Each System has its own file, and when compiled only the relevant file will get loaded.
-     * These files also implement the Functions of Window.
-     * Constructor and Destructor must be delcared here, and defined in their respective platform files
-     */
-    class Window
-    {
+        struct EWindowClose {};
+        struct EInput {};
+
+        using Event = std::variant<EWindowClose, EInput>;
+
+    }
+
+    class Window {
     public:
-        // ==== Section: Platform implementation specific code ==== //
         Window();
         ~Window();
-        void Open();
-        void Close();
-        bool IsOpen();
-        void ProcessEvents();
 
-        // ==== Section: API ==== //
-        void Run() {
-            Open();
-            while (IsOpen()) {
-                ProcessEvents();
-            }
-        }
+        void Update();
+        void Open();
+        void PushEvent(Events::Event event);
+
+        struct WImplementation;
+        std::unique_ptr<WImplementation> impl;
+
 
     private:
-        struct Implementation;
-        std::unique_ptr<Implementation> implementation;
+        void PoolEvents();
+        void CloseWindow();
+
+        std::queue<Events::Event> event_queue;
     };
 }

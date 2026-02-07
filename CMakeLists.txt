@@ -8,11 +8,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 
 add_library(BitCrush STATIC)
+target_include_directories(BitCrush PUBLIC engine/src)
 
 target_sources(BitCrush
     PUBLIC
+        engine/src/utility/Types.h
+        engine/src/core/Application.cpp
+        engine/src/core/Application.h
+        engine/src/core/Window.cpp
         engine/src/core/Window.h
-        engine/src/core/Types.h
 )
 
 if(WIN32)

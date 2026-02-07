@@ -1,6 +1,8 @@
-#include "engine/src/core/Window.h"
+
+
+#include "engine/src/core/Application.h"
 
 int main() {
-    auto window = BitCrush::Window{};
-    window.Run();
+    BitCrush::Application::Get().Init();
+
 }
