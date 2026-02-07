@@ -14,6 +14,10 @@ namespace BitCrush {
      * 4 -> Run Application
      */
     void Application::Init() {
+        #ifdef __APPLE__
+            PlatformInitialize();
+        #endif
+
         // 2. Create Window
         CreateWindow();
 
@@ -38,6 +42,6 @@ namespace BitCrush {
     }
 
     void Application::Exit() {
-
+        exitProgram = true;
     }
 }

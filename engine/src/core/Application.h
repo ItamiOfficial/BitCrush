@@ -24,7 +24,10 @@ namespace BitCrush {
         void Run();
         void Exit();
 
-
         Application() = default;
+
+        #ifdef __APPLE__
+            void PlatformInitialize();
+        #endif
     };
 }
